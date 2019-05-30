@@ -50,19 +50,24 @@ db.serialize(function(){
     // For each department, print the total capacity available.
     let caps = {};
     db.each("SELECT building, capacity FROM Classroom",function(err,row){
-        console.log(row)
+        // console.log(row)
     });
 
-    //     if(caps[row.Dept_name] === undefined)
-    //         caps[row.Dept_name] = 0;
-        
-    //     caps[row.Dept_name] += row.Capacity;
-    // },function(err,count){
-    // //     // console.log("History" + ": "+depts["History"] +" yearly");
-    //     let keys = Object.keys(caps);
-
-    //     for(let i = 0; i != keys.length; ++i){
-    //         console.log(keys[i] + ": "+caps[keys[i]]);
-    //     }
+    let depts = {};
+    db.each("SELECT * FROM Department NATURAL JOIN Classroom",function(err,row){
+           //console.log(row);
+          if(depts[row.Dept_name] === undefined)
+                   depts[row.Dept_name] = 0;
+               
+               depts[row.Dept_name] += row.Capacity;
+           },function(err,count){
+               
+               let keys = Object.keys(depts);
+       
+               for(let i = 0; i != keys.length; ++i){
+                   console.log(keys[i] + ": "+depts[keys[i]]);
+               }
+           
+    });
   
 });
